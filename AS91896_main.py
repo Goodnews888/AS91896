@@ -3,16 +3,18 @@
 #7/06/22, 
 
 #Importing tkinter to allow for GUI
+
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
+import random
 
 #Quits the program upon clicking "Quit" Button.
 def quit():
-    pass
+    main_window.destroy()
 #Setting up the buttons, entries, labels, title as GUI so the end-user can interact with the program.
 def setup_buttons():
-    global camp_details, entry_leader,entry_location,entry_campers,entry_weather, total_entries, delete_item
+    global hire_details, entry_firstname, entry_lastname, entry_hired, entry_quantity, total_entries, delete_item
     Button(main_window, text="Quit",command=quit, width = 5) .grid(column=4, row=0, pady = 5, padx = 5)
     Button(main_window, text="Update",command=append_details) .grid(column=2,row=6, pady = (0, 5))
 
@@ -20,7 +22,8 @@ def setup_buttons():
     Label(main_window, text ="").grid(column = 0, row =1)
     Label(main_window, text ="").grid(column = 0, row =2)
 
-    Label(main_window, text = "Party Hire Tracker", font=(("Arial"), 30)).grid(column = 0, row = 0, columnspan = 4, rowspan = 3)
+    #Changed columnspan to make text more centered.
+    Label(main_window, text = "Party Hire Tracker", font=(("Arial"), 30)).grid(column = 0, row = 0, columnspan = 5, rowspan = 3)
 
     Label(main_window, text="First Name").grid(column=0,row=3)
     entry_firstname = Entry(main_window)
@@ -50,20 +53,55 @@ def delete_row():
 #Checks to see if the input in the entries from the end_user is valid before appending details.
 #Will not append & print if details are invalid.
 def append_details():
-    pass
+    global hire_details, total_entries
+    global entry_firstname, entry_lastname, entry_quantity, entry_hired
+    receipt_number = random.randint(100, 1000)
+    hire_details.append(
+        [   
+            receipt_number,
+            entry_firstname.get(),
+            entry_lastname.get(),
+            entry_hired.get(),
+            entry_quantity.get(),
+        
+        ]
+    )
+    entry_firstname.delete(0, "end")
+    entry_lastname.delete(0, "end")
+    entry_hired.delete(0, "end")
+    entry_quantity.delete(0, "end")
+    total_entries += 1
+    print_hire_details()
+    
+
+    
 
 #What prints the GUI
 def print_hire_details():
-    pass
+    global total_entries, root_count
+    global sub_window
 
+    while root_count <= 1:
+       root_count += 1
+       sub_window = Tk()
+       sub_window.mainloop()
+       
+
+
+        
+
+def validity_checker():
+    pass
 
 #Main function that is the first to run to allow for other functions to run its purpose.
 def main():
-    global main_window, frame
-    global hire_details, entry_first_name, entry_second_name, receipt_number, item_hired, item_quantity, total_entries
+    global main_window, root_count
+    global hire_details 
+    global total_entries
     total_entries = 0
     hire_details = []
     main_window = Tk()
+    root_count = 1
     setup_buttons()
     main_window.mainloop()
    
