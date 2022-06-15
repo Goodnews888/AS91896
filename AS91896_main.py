@@ -55,7 +55,7 @@ def delete_row():
 def append_details():
     global hire_details, total_entries
     global entry_firstname, entry_lastname, entry_quantity, entry_hired
-    receipt_number = random.randint(100, 1000)
+    receipt_number = random.randint(100, 1000000)
     hire_details.append(
         [   
             receipt_number,
@@ -80,12 +80,42 @@ def append_details():
 def print_hire_details():
     global total_entries, root_count
     global sub_window
+    name_count = 0
+
 
     while root_count <= 1:
-       root_count += 1
-       sub_window = Tk()
-       sub_window.mainloop()
-       
+        root_count += 1
+        sub_window = Tk()
+        Label(sub_window, font="bold", text="Receipt Number").grid(column=0, row=0, padx = (0, 20))
+        Label(sub_window, font="bold", text="First Name").grid(column=1, row=0)
+        Label(sub_window, font="bold", text="Last Name").grid(column=2, row=0, padx = (20, 20))
+        Label(sub_window, font="bold", text="Item Hired").grid(column=3, row=0)
+        Label(sub_window, font="bold", text="Item Quantity #").grid(column=4, row=0, padx = (20, 0))
+        sub_window.protocol("WM_DELETE_WINDOW", closed_window) 
+    while name_count < total_entries:
+        Label(sub_window, text=(hire_details[name_count][0])).grid(
+            column=0, row = name_count + 1
+        )
+        Label(sub_window, text=(hire_details[name_count][1])).grid(
+            column=1, row = name_count + 1
+        )
+        Label(sub_window, text=(hire_details[name_count][2])).grid(
+            column=2, row = name_count + 1
+        )
+        Label(sub_window, text=(hire_details[name_count][3])).grid(
+            column=3, row = name_count + 1
+        )
+        Label(sub_window, text = (hire_details[name_count][4])).grid(
+            column=4, row = name_count + 1
+        )
+        name_count += 1
+
+def closed_window():
+    global root_count, sub_window
+    root_count = 1
+    sub_window.destroy()
+
+
 
 
         
