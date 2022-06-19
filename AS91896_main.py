@@ -18,8 +18,9 @@ def setup_buttons():
     global entry_hired, entry_quantity, total_entries, delete_item
     global receipt_list, Receipt
     
-    Button(main_window, text="Quit",command=quit, width = 5) .grid(column=4, row=0, pady = 5, padx = 5)
-    Button(main_window, text="Update",command=append_details) .grid(column=2,row=6, pady = (0, 5))
+    Button(main_window, text="Quit",command=quit, width = 10) .grid(column=4, row=0, pady = 5, padx = 5)
+    Button(main_window, text="Update",command=validity_checker, width = 5) .grid(column=2,row=6, pady = (0, 5))
+    Button(main_window, text ="Show Details", command = show_details, width =10) .grid(column =4, row =6, pady = 5, padx = 5)
 
 
     Label(main_window, text ="").grid(column = 0, row =1)
@@ -48,7 +49,7 @@ def setup_buttons():
     Receipt =  StringVar()
     delete_item = ttk.Combobox(main_window, state='readonly', value = receipt_list, textvariable = Receipt)
     delete_item.grid(column=3,row=3) 
-    Button(main_window, text="Delete",command=delete_row) .grid(column=4,row=3 )
+    Button(main_window, text="Delete",command=delete_row, width =10) .grid(column=4,row=3 )
 
 #Allowing to delete the customer from the current list.
 def delete_row():
@@ -83,7 +84,7 @@ def append_details():
     global hire_details, total_entries, delete_item, receipt_number, receipt_list
     global entry_firstname, entry_lastname, entry_quantity, entry_hired
     global Receipt, sub_window
-    receipt_number = random.randint(100, 1000000)
+    receipt_number = random.randint(10000, 100000000000)
     
     hire_details.append(
         [   
@@ -156,7 +157,42 @@ def closed_window():
     sub_window.destroy()
 
 def validity_checker():
-    pass
+    #If all entry boxes are not empty AND entry quantity is a digit, 
+    #it will check if the digit is between 1 and 500, 
+    #if true it will append details, otherwise 
+    #message error box pops up as shown below
+    if (
+        len(entry_firstname.get()) != 0
+        and len(entry_lastname.get()) != 0
+        and len(entry_hired.get()) != 0
+        and entry_quantity.get().isdigit()
+    ):
+        if int(entry_quantity.get()) >= 1 and int(entry_quantity.get()) <= 500:
+            append_details()
+        else:
+            messagebox.showerror(message ="Sorry! The Item Quantity is restricted between 1 and 500")
+    #If any of the entry boxes are empty and/or entry_quantity is not a digit, it will run this code.
+    else:
+        if len(entry_firstname.get()) == 0:
+            messagebox.showerror(message ="Please enter Customer's first name")
+        if len(entry_lastname.get()) == 0:
+            messagebox.showerror(message ="Please enter Customer's last name")
+        if len(entry_hired.get()) == 0:
+            messagebox.showerror(message = "Please enter the item that is being hired")
+        if entry_quantity.get().isdigit():
+            if (
+                len(entry_quantity.get()) == 0
+                or int(entry_quantity.get()) < 1
+                or int(entry_quantity.get()) > 500
+            ):
+                messagebox.showerror(message ="Sorry! The Item Quantity is restricted between 1 and 500")
+        else:
+            messagebox.showerror(message ="Please enter the item quantity (Numbers only)")
+
+def show_details():
+    print_hire_details()
+    
+    
 
 #Main function that is the first to run to allow for other functions to run its purpose.
 def main():
