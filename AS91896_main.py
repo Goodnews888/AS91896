@@ -16,10 +16,20 @@ def quit():
 def setup_buttons():
     global hire_details, entry_firstname, entry_lastname 
     global entry_hired, entry_quantity, total_entries, delete_item
-    global receipt_list, Receipt
+    global receipt_list, Receipt, main_color
     
+    #Button used for quitting the program (closing the window)
     Button(main_window, text="Quit",command=quit, width = 10) .grid(column=4, row=0, pady = 5, padx = 5)
+
+    #Button used for not only appending the details to the hire_details list but also display those details
+    #as GUI on the sub_window.
     Button(main_window, text="Update",command=validity_checker, width = 5) .grid(column=2,row=6, pady = (0, 5))
+
+    #Button used for showing the details that have already been appended to the hire_details list. This button is used
+    #if user has closed the sub_window and would like to review the details of the customers.
+    #You might think that the update button alone already displays the sub_window, however the user is required
+    #to enter new details for a customer to actually display the sub_window. This is frustrating, which is why
+    #I have made a seperate button that displays the sub_window without having to enter any new details for a customer.
     Button(main_window, text ="Show Details", command = show_details, width =10) .grid(column =4, row =6, pady = 5, padx = 5)
 
 
@@ -27,7 +37,7 @@ def setup_buttons():
     Label(main_window, text ="").grid(column = 0, row =2)
 
     #Changed columnspan to make text more centered.
-    Label(main_window, text = "Party Hire Tracker", font=(("Arial"), 30)).grid(column = 0, row = 0, columnspan = 5, rowspan = 3)
+    Label(main_window, text = "Party Hire Tracker", font=(("Arial"), 30, "bold"), relief = SUNKEN, bg = main_color).grid(column = 0, row = 0, columnspan = 5, rowspan = 3)
 
     Label(main_window, text="First Name").grid(column=0,row=3)
     entry_firstname = Entry(main_window)
@@ -56,6 +66,7 @@ def delete_row():
     global delete_item, hire_details, total_entries, Receipt
     global sub_window, name_count, closed_window, receipt_list
     
+
     for i in range(len(hire_details)):
         if str(hire_details[i][0]) == str(Receipt.get()):
             hire_details.pop(i)
@@ -198,16 +209,45 @@ def show_details():
 def main():
     global main_window, root_count
     global hire_details, receipt_list
-    global total_entries
+    global total_entries, main_color
     total_entries = 0
+    main_color = "cornflower blue"
+    
+    #hire_details will be used a multidimensional lists
+    #meaning it stores multiple list inside this one main list.
+    #Each list will contain the details that were entered for ONE customer.
+    #This will be very important in keeping track of what items are being hired, 
+    #the quantity, the receipt number 
+    #and the name of the customer that is hiring x item.
     hire_details = []
+
+    #Likewise to the hire_details, receipt_list also contains receipt numbers.
+    #However this list I specifically used to append the randomly generated
+    #receipt number. This receipt number is then appended to the
+    #hire_details multidimensional list.
+    #The values stored by the receipt list are used in the 
+    #receipt number combobox that is being used to delete any rows of 
+    #party hire details.
     receipt_list = []
+
+    #This is my main window where the user will enter in the party hire details
+    #from this window, not to be confused with my sub_window.
     main_window = Tk()
 
+    #Setting main_window color
+
+
+    #Making new variable called root_count, 
+    #which is used to track how many windows are open at once.   
+    #No more than two windows can be open at any given time. 
+    #One window will be the MAIN User Interface, 
+    #where the user can enter the party details.
+    #Second window will be the window uses to display 
+    #the party details that were entered in by the user.
     root_count = 1
     setup_buttons()
     main_window.mainloop()
-   
+
 main()
 
 
