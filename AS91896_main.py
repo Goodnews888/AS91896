@@ -286,7 +286,7 @@ def main():
     
 
     total_entries = 0
-    main_color = "cornflower blue"
+    main_color = "VioletRed3"
     
     #hire_details will be used a multidimensional lists
     #meaning it stores multiple list inside this one main list.
